@@ -13,6 +13,10 @@ import (
 
 func LogEvent(body []byte, writer io.Writer) {
 	requestStr := string(body)
+
+	requestStr, _ = sjson.Delete(requestStr, "request.object.metadata.managedFields")
+	requestStr, _ = sjson.Delete(requestStr, "request.oldObject.metadata.managedFields")
+
 	updatedObj, err := addTimestamp(requestStr)
 	if err != nil {
 		common.Logger.Debugw("failed to add timestamp", "error", err)
